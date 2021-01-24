@@ -1,0 +1,29 @@
+function mm_get_res_init()
+{
+	//save desktop resolution 
+	sp_sc_cvar_split ~res ":" _sp_cl_vid_mode_0
+	sp_sc_cvar_split ~xy "x" ~res_3
+	sp_sc_cvar_sset ~mm_res_desktop #~xy_1 "x" #~xy_2
+	sp_sc_cvar_save mm_res_desktop ~mm_res_desktop
+	sp_sc_on_change gl_mode mm_gl_mode
+	//1st run
+	sp_sc_file_find ~mm sofplus/data/mm_res.cfg file 
+	sp_sc_flow_if number cvar ~mm == val 0
+	{
+		sp_sc_func_exec mm_gl_mode "gl_mode"
+	}
+}
+
+function mm_gl_mode(~cvar)
+{
+	sp_sc_flow_if number cvar vid_ypos < val 0
+	{
+		set vid_ypos 0
+		set vid_xpos 0
+	}
+	sp_sc_cvar_copy ~val $~cvar
+	sp_sc_cvar_copy ~res _sp_cl_vid_mode_$~val
+	sp_sc_cvar_split ~xy "x" ~res
+	sp_sc_cvar_sset ~res #~xy_1 "x" #~xy_2
+	sp_sc_cvar_save mm_res ~res
+}
