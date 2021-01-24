@@ -143,7 +143,7 @@ class NamedPipeClient(object):
 		raise ctypes.WinError()
 
 def main():
-	procname = "SoF-backup.exe"
+	procname = "SoF.exe"
 	script_path = "script.py"
 
 	if not sys.platform.startswith('win'):
